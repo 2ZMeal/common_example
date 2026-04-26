@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: product-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product_db
+    username: product_user
+    password: product_pass
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+eureka:
+  client:
+    register-with-eureka: false # 내 정보를 유레카 서버에 등록하지 않음 (예시용임으로 비활성화 함)
+    fetch-registry: false       # 다른 서버 정보를 유레카에서 가져오지 않음 (예시용임으로 비활성화 함)
