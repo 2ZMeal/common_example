@@ -3,10 +3,10 @@ package com.example.product.application.service;
 import com.example.product.application.dto.request.ProductCreateRequest;
 import com.example.product.application.dto.request.ProductUpdateRequest;
 import com.example.product.application.dto.response.ProductResponse;
-import com.example.product.domain.event.ProductCreatedEvent;
+import com.example.product.domain.event.ProductEventProducer;
+import com.example.product.domain.event.payload.ProductCreatedEvent;
 import com.example.product.domain.exception.ProductErrorCode;
 import com.example.product.domain.model.Product;
-import com.example.product.domain.repository.ProductEventPublisher;
 import com.example.product.domain.repository.ProductRepository;
 import com.ezmeal.common.enums.Role;
 import com.ezmeal.common.exception.types.ForbiddenException;
@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductEventPublisher eventPublisher;
+    private final ProductEventProducer eventProducer;
 
     // =====================================================================
     // USER ID가 제공이 되는 API 요청 / Kakfa Message인 경우
@@ -48,7 +48,7 @@ public class ProductService {
         // 일반적으로 Read를 제외한 Create, Update, Delete는 이벤트로 처리
         /*
         ProductCreatedEvent event = ProductCreatedEvent.of(savedProduct.getId(), savedProduct.getName());
-        eventPublisher.publishCreatedEvent(event);
+        eventProducer.publishCreatedEvent(event);
         */
 
         return ProductResponse.from(savedProduct);
@@ -81,7 +81,7 @@ public class ProductService {
         // 일반적으로 Read를 제외한 Create, Update, Delete는 이벤트로 처리
         /*
         ProductUpdatedEvent event = ProductUpdatedEvent.of(product.getId(), product.getName());
-        eventPublisher.publishUpdatedEvent(event);
+        eventProducer.publishUpdatedEvent(event);
         */
 
         return ProductResponse.from(product);
@@ -104,7 +104,7 @@ public class ProductService {
         // 일반적으로 Read를 제외한 Create, Update, Delete는 이벤트로 처리
         /*
         ProductDeletedEvent event = ProductDeletedEvent.of(productId);
-        eventPublisher.publishDeletedEvent(event);
+        eventProducer.publishDeletedEvent(event);
         */
     }
 
@@ -122,7 +122,7 @@ public class ProductService {
 
         // 2. 다른 마이크로서비스에 생성 이벤트 전파
         ProductCreatedEvent event = ProductCreatedEvent.of(savedProduct.getId(), savedProduct.getName());
-        eventPublisher.publishCreatedEvent(event);
+        eventProducer.publishCreatedEvent(event);
     }
 
     // 상품 수정
@@ -139,7 +139,7 @@ public class ProductService {
         // 일반적으로 Read를 제외한 Create, Update, Delete는 이벤트로 처리
         /*
         ProductUpdatedEvent event = ProductUpdatedEvent.of(product.getId(), product.getName());
-        eventPublisher.publishUpdatedEvent(event);
+        eventProducer.publishUpdatedEvent(event);
          */
     }
 
@@ -157,7 +157,7 @@ public class ProductService {
         // 일반적으로 Read를 제외한 Create, Update, Delete는 이벤트로 처리
         /*
         ProductDeletedEvent event = ProductDeletedEvent.of(productId);
-        eventPublisher.publishDeletedEvent(event);
+        eventProducer.publishDeletedEvent(event);
         */
     }
 

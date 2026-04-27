@@ -1,9 +1,9 @@
-package com.example.product.infrastructure.message;
+package com.example.product.infrastructure.message.kafka.producer;
 
-import com.example.product.domain.event.ProductCreatedEvent;
-import com.example.product.domain.event.ProductDeletedEvent;
-import com.example.product.domain.event.ProductUpdatedEvent;
-import com.example.product.domain.repository.ProductEventPublisher;
+import com.example.product.domain.event.ProductEventProducer;
+import com.example.product.domain.event.payload.ProductCreatedEvent;
+import com.example.product.domain.event.payload.ProductDeletedEvent;
+import com.example.product.domain.event.payload.ProductUpdatedEvent;
 import com.ezmeal.common.security.principal.CustomUserPrincipal;
 import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class KafkaProductEventPublisher implements ProductEventPublisher {
+public class ProductEventProducerImpl implements ProductEventProducer {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 

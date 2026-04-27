@@ -28,11 +28,6 @@ public class ProductController {
 
     private final ProductService productService;
 
-    /*
-    * 일반적으로 권한 검증은 service나 domain에서 일차적(필수)으로 구현하고,
-    * controller에서 preauthorize를 활요한 2차 검증은 "선택"하여 적용
-    * */
-
     // 상품 생성
     @PostMapping
     public ResponseEntity<CommonApiResponse<ProductResponse>> createProduct(
@@ -61,7 +56,6 @@ public class ProductController {
     @DeleteMapping("/{productId}")
     public ResponseEntity<CommonApiResponse<Void>> deleteProduct(
             @PathVariable UUID productId,
-            // 공통 모듈의 필터에서 넣어준 사용자 정보를 사용
             @AuthenticationPrincipal CustomUserPrincipal principal) {
 
         productService.deleteProduct(productId, principal.getUserId());

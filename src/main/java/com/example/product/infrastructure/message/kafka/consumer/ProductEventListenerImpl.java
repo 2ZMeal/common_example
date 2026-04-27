@@ -1,4 +1,4 @@
-package com.example.product.presentation.message;
+package com.example.product.infrastructure.message.kafka.consumer;
 
 import com.example.product.application.dto.message.ProductCreateMessage;
 import com.example.product.application.dto.message.ProductDeleteMessage;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ProductMessageListener {
+public class ProductEventListenerImpl {
 
     private final ProductService productService;
 
@@ -28,11 +28,9 @@ public class ProductMessageListener {
 
         if (principal != null) {
             log.info("[Kafka] 유저({})의 요청으로 상품을 생성합니다. 상품명: {}", principal.getUserId(), message.getName());
-            // 서비스의 유저용 메서드 호출 (Message 객체의 데이터를 Request 객체로 맵핑하여 전달)
             productService.createProduct(new ProductCreateRequest(message.getName()));
         } else {
             log.info("[Kafka] 시스템 요청으로 상품을 생성합니다. 상품명: {}", message.getName());
-            // 서비스의 시스템 전용 로직 호출
             productService.createProductBySystem(message.getName());
         }
     }
@@ -64,7 +62,6 @@ public class ProductMessageListener {
 
         if (principal != null) {
             log.info("[Kafka] 유저({})의 요청으로 상품을 삭제합니다. ID: {}", principal.getUserId(), message.getProductId());
-            // 유저 ID를 추출해서 서비스 레이어로 전달 (Soft Delete 기록용)
             productService.deleteProduct(message.getProductId(), principal.getUserId());
         } else {
             log.info("[Kafka] 시스템 요청으로 상품을 삭제합니다. ID: {}", message.getProductId());

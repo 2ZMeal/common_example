@@ -1,4 +1,4 @@
-package com.example.product.domain.event;
+package com.example.product.domain.event.payload;
 
 import java.util.UUID;
 import lombok.AccessLevel;
